@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //WebSecur
 //                .password(passwordEncoder().encode("06081976"))
 //                .roles("ADMIN");
 
-        // AUTENTICAÇÃO EM BANCO DE DADOS
+        // AUTENTICAÇÃO EM BANCO DE DADOS (Criar endpoint para cadastro de usuários)
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
