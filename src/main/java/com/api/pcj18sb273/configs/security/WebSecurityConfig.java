@@ -3,6 +3,7 @@ package com.api.pcj18sb273.configs.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -24,6 +25,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //WebSecur
                 .httpBasic()
                 .and()
                 .authorizeHttpRequests()
+                .antMatchers(HttpMethod.GET,"/parking-spot/**").permitAll() // Endpoints com método GET não requer auth
+                .antMatchers(HttpMethod.POST, "/parking-spot").hasRole("USER") // Endpoints com método POST só pode ser acessado por role USER
+                .antMatchers(HttpMethod.DELETE, "/parking-spot/**").hasRole("ADMIN") // Endpoints com método DELETE só pode ser acessado por role ADMIN
                 //.anyRequest().permitAll(); // permitAll() permite todas as requisições, não é feita autenticação
                 .anyRequest().authenticated() // com authenticated() as requisições são, obrigatoriamente, autenticadas
                 .and()
