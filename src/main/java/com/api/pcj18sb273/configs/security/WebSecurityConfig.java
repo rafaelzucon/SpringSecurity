@@ -1,5 +1,6 @@
 package com.api.pcj18sb273.configs.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,6 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //WebSecurityConfigurerAdapter is Deprecated in Java 18!!!
+
+    final UserDetailsServiceImpl userDetailsService;
+
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -25,10 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter { //WebSecur
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-        auth.inMemoryAuthentication()
-                .withUser("asdrubal")
-                .password(passwordEncoder().encode("06081976"))
-                .roles("ADMIN");
+        // AUTENTICAÇÃO EM MEMÓRIA
+//        auth.inMemoryAuthentication()
+//                .withUser("asdrubal")
+//                .password(passwordEncoder().encode("06081976"))
+//                .roles("ADMIN");
+
+        // AUTENTICAÇÃO EM BANCO DE DADOS
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
     }
     @Bean
     public PasswordEncoder passwordEncoder(){
